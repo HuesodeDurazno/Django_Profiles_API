@@ -3,7 +3,9 @@ from django.contrib.auth.models import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.contrib.auth.models import BaseUserManager
 
-class UserProfileManager(BaseUserManager):#BaseUserManager is a class that provides default implementations for the create_user, create_superuser, and get_user_model methods.
+
+# BaseUserManager is a class that provides default implementations for the create_user, create_superuser, and get_user_model methods.
+class UserProfileManager(BaseUserManager):
     """Manager for user profiles"""
 
     def create_user(self, email, name, password=None):
@@ -29,16 +31,18 @@ class UserProfileManager(BaseUserManager):#BaseUserManager is a class that provi
 
         return user
 
-class UserProfile(AbstractBaseUser, PermissionsMixin):#* necesary classes to override the default user model
+
+# * necesary classes to override the default user model
+class UserProfile(AbstractBaseUser, PermissionsMixin):
     """Database model for users in the system"""
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
 
-    objects = UserProfileManager() #* UserProfileManager is a custom manager class
+    objects = UserProfileManager()  # * UserProfileManager is a custom manager class
 
-    USERNAME_FIELD = 'email' 
+    USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['name']
 
     def get_full_name(self):
